@@ -81,6 +81,10 @@ button:active {
 
 }
 
+.ops {
+    font-size: 30px;
+}
+
 #clearBtn {
     background-color: red;
 }

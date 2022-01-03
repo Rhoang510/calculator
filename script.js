@@ -1,7 +1,7 @@
-let ops = [];
-let firstInput = [];
-let secondInput = [];
-let total = parseInt(0);
+let operator = "";
+let storedNumber = "";
+let currentNumber = "";
+let total = 0;
 const numberBtn = document.querySelectorAll(".numbers");
 const operationBtn = document.querySelectorAll(".ops");
 const bottomDisplay = document.querySelector(".currentNumber");
@@ -10,83 +10,78 @@ const clearBtn = document.querySelector("#clearBtn");
 const equalBtn = document.querySelector("#equalBtn");
 const decimalBtn = document.querySelector("#decimalBtn");
 const deleteBtn = document.querySelector("#deleteBtn");
-const addBtn = document.querySelector("#addBtn");
-const subBtn = document.querySelector("#subBtn");
-const multiplyBtn = document.querySelector("#multiplyBtn");
-const divideBtn = document.querySelector("#divideBtn");
-let opsBtn = document.querySelector(".ops");
+const opsBtn = document.querySelectorAll(".ops");
+// const addBtn = document.querySelector("#addBtn");
+// const subBtn = document.querySelector("#subBtn");
+// const multiplyBtn = document.querySelector("#multiplyBtn");
+// const divideBtn = document.querySelector("#divideBtn");
 
-
-function add(a, b) {
-    return a + b;
-}
-
-function subtract(a, b) {
-    return a - b;
-}
-
-function multiply(a, b) {
-    return a * b;
-}
-
-function divide(a, b) {
-    return a / b;
-}
-
-// const sum = function(array) {
-//     return array.reduce((total, current) => total + current, 0);
-//   };
-
-function equal() {
-    switch(ops) {
-        case "+":
-            total = add(firstInput, secondInput);
-            bottomDisplay.textContent = total;
-            break;
-        case "-":
-            total = subtract(firstInput, secondInput);
-            bottomDisplay.textContent = total;
-            break;
-        case "*":
-            total = multiply(firstInput, secondInput);
-            bottomDisplay.textContent = total;
-             break;
-        case "÷":
-            total = divide(firstInput, secondInput);
-            bottomDisplay.textContent = total;
-            break;
+function calculate(storedNumber, currentNumber, operator) {
+    let operators = {
+        "+": (a, b) => a + b,
+        "-": (a, b) => a - b,
+        "x": (a, b) => a * b,
+        "÷": (a, b) => a / b
     }
+    return operator in operators ? operators[operator](parseInt(storedNumber), parseInt(currentNumber)) : NaN;
 }
 
-function pullNum(e) {
-    let num = parseInt(this.id);
+function pullNumber() {
+    let num = this.textContent;
     bottomDisplay.textContent += num;
-    firstInput.push(num);
-    console.log(num);
+    currentNumber += num;
+    console.log(currentNumber);
 }
 
-numberBtn.forEach((number) => {
-    number.addEventListener("click", pullNum);
-});
+// function pickOperator() {
+//     let operator = this.textContent;
+//     storedNumber = currentNumber;
+//     currentNumber = "";
+//         switch(operator) {
+//             case "+":
+//                 bottomDisplay.textContent = "";
+//                 topDisplay.textContent = `${storedNumber} ${this.id}`
+//                 console.log(operator);
+//                 break;
+//             case "-":
+//                 bottomDisplay.textContent = "";
+//                 topDisplay.textContent = `${storedNumber} ${this.id}`
+//                 break;
+//             case "x":
+//                 bottomDisplay.textContent = "";
+//                 topDisplay.textContent = `${storedNumber} ${this.id}`
+//                 break;
+//             case "÷":
+//                 bottomDisplay.textContent = "";
+//                 topDisplay.textContent = `${storedNumber} ${this.id}`
+//                 break;
+//         }
+//     }
 
-function pickOperator(e) {
-    let operator = this.id;
-    ops.push(operator);
+function pickOperator() {
+    operator = this.textContent;
+    storedNumber = currentNumber;
+    currentNumber = "";
+    bottomDisplay.textContent = "";
+    topDisplay.textContent = `${storedNumber} ${operator}`;
     console.log(operator);
 }
 
+numberBtn.forEach((number) => {
+    number.addEventListener("click", pullNumber);
+ });
 
-equalBtn.addEventListener("click", operate);
+ opsBtn.forEach((op) => {
+     op.addEventListener("click", pickOperator);
+ });
 
-operationBtn.forEach((ops) => {
-    ops.addEventListener("click", pickOperator)
-})
+equalBtn.addEventListener("click", calculate);
 
 clearBtn.addEventListener("click", () => {
-    ops = [];
-    firstInput = [];
-    secondInput = [];
-    total = parseInt(0);
+    operator = "";
+    firstInput = "";
+    secondInput = "";
+    total = 0;
     topDisplay.textContent = "";
     bottomDisplay.textContent = "";
 })
