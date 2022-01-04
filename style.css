@@ -42,22 +42,22 @@ body {
 }
 
 .currentNumber {
-    font-size: 30px;
+    font-size: 34px;
     font-weight: 400;
 }
 
 .previousNumber {
     padding-top: 15px;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 button {
     height: 75px;
     width: 90px;
     border-radius: 10px;   
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 500;
     border: 1px solid black;
     box-shadow: 2px 2px 2px black;
 }
@@ -78,11 +78,16 @@ button:active {
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
+}
 
+.operation {
+    font-size: 30px;
+    font-weight: 600;
 }
 
 .ops {
     font-size: 30px;
+    font-weight: 600;
 }
 
 #clearBtn {
