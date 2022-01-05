@@ -1,17 +1,16 @@
 let operator = "";
 let storedNumber = [];
 let currentNumber = [];
-let total = "";
+let total = 0;
 const numberBtn = document.querySelectorAll(".numbers");
 const bottomDisplay = document.querySelector(".currentNumber");
 const topDisplay = document.querySelector(".previousNumber");
 const clearBtn = document.querySelector("#clearBtn");
 const equalBtn = document.querySelector("#equalBtn");
-const decimalBtn = document.querySelector("#decimalBtn");
+const decimalBtn = document.querySelector("#decimal");
 const deleteBtn = document.querySelector("#deleteBtn");
 const remainderBtn = document.querySelector("#remainder")
 const opsBtn = document.querySelectorAll(".ops");
-// const pressedOperator = Array.from(document.querySelectorAll("#ops"))
 
 function calculate(storedNumber, currentNumber, operator) {
     let operators = {
@@ -26,9 +25,8 @@ function calculate(storedNumber, currentNumber, operator) {
 
 function pullNumber() {
     let num = this.textContent;
-    bottomDisplay.textContent += num;
     currentNumber += num;
-    console.log(currentNumber);
+    bottomDisplay.textContent = currentNumber;
 }
 
 function pickOperator() {
@@ -37,20 +35,20 @@ function pickOperator() {
     currentNumber = [];
     bottomDisplay.textContent = "";
     topDisplay.textContent = `${storedNumber} ${operator}`;
-    console.log(operator);
 }
 
 function calculatingTotal() {
-    total = calculate(storedNumber, currentNumber, operator);
-    bottomDisplay.textContent = total;
-    topDisplay.textContent = `${storedNumber} ${operator} ${currentNumber}`
-    currentNumber = total;
-    currentNumber = "";
-    operator = "";
+    if(!operator == false){
+        total = calculate(storedNumber, currentNumber, operator);
+        bottomDisplay.textContent = total;
+        topDisplay.textContent = `${storedNumber} ${operator} ${currentNumber}`
+        currentNumber = total;
+        operator = "";
+    }
 }
 
 function clear() {
-    operator = [];
+    operator = "";
     storedNumber = [];
     currentNumber = [];
     total = 0;
@@ -58,23 +56,21 @@ function clear() {
     bottomDisplay.textContent = "";
 }
 
-function erase() {
+function del() {
 
 }
 
 function decimal() {
-
+    let decimalClicked = this.textContent;
+    if(currentNumber.includes(decimalClicked) == false) {
+        currentNumber += decimalClicked;
+        bottomDisplay.textContent = currentNumber;
+    }
 }
 
-numberBtn.forEach((number) => {
-    number.addEventListener("click", pullNumber);
- });
-
- opsBtn.forEach((op) => {
-    op.addEventListener("click", pickOperator);
- });
-
+numberBtn.forEach(number => number.addEventListener("click", pullNumber));
+opsBtn.forEach(op => op.addEventListener("click", pickOperator));
 equalBtn.addEventListener("click", calculatingTotal);
 clearBtn.addEventListener("click", clear);
-// decimalBtn.addEventListener("click", decimal);
-// deleteBtn.addEventListener("click", erase);
+decimalBtn.addEventListener("click", decimal);
+// deleteBtn.addEventListener("click", del);
