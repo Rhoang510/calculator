@@ -42,14 +42,14 @@ body {
 }
 
 .currentNumber {
-    font-size: 34px;
+    font-size: 40px;
     font-weight: 400;
 }
 
 .previousNumber {
     padding-top: 15px;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 button {

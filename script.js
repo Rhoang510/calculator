@@ -1,4 +1,5 @@
 let operator = "";
+let num = "";
 let storedNumber = [];
 let currentNumber = [];
 let total = 0;
@@ -20,31 +21,62 @@ function calculate(storedNumber, currentNumber, operator) {
         "÷": (a, b) => b === 0 ? "Error, can't divide by 0" : a / b,
         "%": (a, b) => a % b
     }
-     return operator in operators ? operators[operator](parseInt(storedNumber), parseInt(currentNumber)) : NaN; 
+     return operator in operators ? operators[operator](Number(storedNumber), Number(currentNumber)) : NaN; 
 }
 
-function pullNumber() {
-    let num = this.textContent;
-    currentNumber += num;
-    bottomDisplay.textContent = currentNumber;
+function inputTotal() {
+    if(!operator == false){
+        total = calculate(storedNumber, currentNumber, operator);
+        bottomDisplay.textContent = total;
+        topDisplay.textContent = `${storedNumber} ${operator} ${currentNumber}`;
+        currentNumber = total;
+        operator = "";
+    }
 }
 
-function pickOperator() {
-    operator = this.textContent;
+function inputOperator() {
     storedNumber = currentNumber;
     currentNumber = [];
     bottomDisplay.textContent = "";
     topDisplay.textContent = `${storedNumber} ${operator}`;
+    total = 0;
 }
 
-function calculatingTotal() {
-    if(!operator == false){
-        total = calculate(storedNumber, currentNumber, operator);
-        bottomDisplay.textContent = total;
-        topDisplay.textContent = `${storedNumber} ${operator} ${currentNumber}`
-        currentNumber = total;
-        operator = "";
+function inputNumbers() {
+    // removeLeadingZeros(currentNumber);
+    currentNumber += num;
+    topDisplay.textContent = `${storedNumber} ${operator}`;
+    bottomDisplay.textContent = currentNumber;
+}
+
+// function removeLeadingZeros(currentNumber) {
+//     let floatNum = parseFloat(currentNumber);
+//     return floatNum % 1 == 0 ? floatNum.toFixed(0) : floatNum.toFixed(1);
+// }
+
+function pullNumber() {
+    if(!total === false) {
+        clear();
+        num = this.textContent;
+        inputNumbers();
+    }  else {
+        num = this.textContent;
+        inputNumbers();
     }
+}
+
+function pickOperator() {
+    if(!operator == false) {
+        inputTotal();
+        operator = this.textContent;
+        inputOperator();
+    } else {
+        operator = this.textContent;
+        inputOperator();
+    }
+    console.log(storedNumber);
+    console.log(currentNumber);
+    console.log(operator);
 }
 
 function clear() {
@@ -57,12 +89,17 @@ function clear() {
 }
 
 function del() {
-
+    currentNumber = currentNumber.slice(0, -1);
+    bottomDisplay.textContent = currentNumber;
+    console.log(currentNumber);
 }
 
 function decimal() {
     let decimalClicked = this.textContent;
     if(currentNumber.includes(decimalClicked) == false) {
+        if(currentNumber == 0 ) {
+            currentNumber = "0" + decimalClicked;
+        }
         currentNumber += decimalClicked;
         bottomDisplay.textContent = currentNumber;
     }
@@ -70,7 +107,7 @@ function decimal() {
 
 numberBtn.forEach(number => number.addEventListener("click", pullNumber));
 opsBtn.forEach(op => op.addEventListener("click", pickOperator));
-equalBtn.addEventListener("click", calculatingTotal);
+equalBtn.addEventListener("click", inputTotal);
 clearBtn.addEventListener("click", clear);
 decimalBtn.addEventListener("click", decimal);
-// deleteBtn.addEventListener("click", del);
+deleteBtn.addEventListener("click", del);
