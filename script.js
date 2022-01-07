@@ -1,5 +1,4 @@
 let operator = "";
-let num = "";
 let storedNumber = [];
 let currentNumber = [];
 let total = 0;
@@ -18,20 +17,35 @@ function calculate(storedNumber, currentNumber, operator) {
         "+": (a, b) => a + b,
         "-": (a, b) => a - b,
         "x": (a, b) => a * b,
-        "÷": (a, b) => b === 0 ? "Error, can't divide by 0" : a / b,
+        "÷": (a, b) => b === 0 ? alert("Error, can't divide by 0") : a / b,
         "%": (a, b) => a % b
     }
-     return operator in operators ? operators[operator](Number(storedNumber), Number(currentNumber)) : NaN; 
+    return operator in operators ? operators[operator](Number(storedNumber), Number(currentNumber)) : NaN; 
+}
+
+function roundTotal(total) {
+    return Math.round(total * 10000) / 10000;
 }
 
 function inputTotal() {
     if(!operator == false){
-        total = calculate(storedNumber, currentNumber, operator);
+        total = roundTotal(calculate(storedNumber, currentNumber, operator));
         bottomDisplay.textContent = total;
-        topDisplay.textContent = `${storedNumber} ${operator} ${currentNumber}`;
+        topDisplay.textContent = `${storedNumber} ${operator} ${currentNumber} =`;
         currentNumber = total;
         operator = "";
     }
+}
+
+// function removeLeadingZeros(currentNumber) {
+//     let floatNum = parseFloat(currentNumber);
+//     return floatNum % 1 == 0 ? floatNum.toFixed(0) : floatNum.toFixed(1);
+// }
+
+function inputNumbers() {
+    currentNumber += num;
+    topDisplay.textContent = `${storedNumber} ${operator}`;
+    bottomDisplay.textContent = currentNumber;
 }
 
 function inputOperator() {
@@ -42,40 +56,32 @@ function inputOperator() {
     total = 0;
 }
 
-function inputNumbers() {
-    // removeLeadingZeros(currentNumber);
-    currentNumber += num;
-    topDisplay.textContent = `${storedNumber} ${operator}`;
-    bottomDisplay.textContent = currentNumber;
-}
-
-// function removeLeadingZeros(currentNumber) {
-//     let floatNum = parseFloat(currentNumber);
-//     return floatNum % 1 == 0 ? floatNum.toFixed(0) : floatNum.toFixed(1);
-// }
-
 function pullNumber() {
-    if(!total === false) {
+    num = this.textContent;
+    if(!total == false) {
         clear();
-        num = this.textContent;
         inputNumbers();
-    }  else {
-        num = this.textContent;
+    } else if(currentNumber.length >= 17) {
+        topDisplay.textContent = "Too many numbers, please pick an operator!";
+    } else {
         inputNumbers();
     }
 }
 
 function pickOperator() {
-    if(!operator == false) {
+    if(storedNumber != "" && currentNumber == "") {
+        operator = this.textContent;
+        topDisplay.textContent = `${storedNumber} ${operator}`;
+    } else if(!operator == false) {
         inputTotal();
         operator = this.textContent;
         inputOperator();
+    } else if(!operator == true && currentNumber == "") {
+        topDisplay.textContent = "Please choose a number first";
     } else {
         operator = this.textContent;
         inputOperator();
     }
-    console.log(storedNumber);
-    console.log(currentNumber);
     console.log(operator);
 }
 
@@ -91,18 +97,17 @@ function clear() {
 function del() {
     currentNumber = currentNumber.slice(0, -1);
     bottomDisplay.textContent = currentNumber;
-    console.log(currentNumber);
 }
 
 function decimal() {
-    let decimalClicked = this.textContent;
-    if(currentNumber.includes(decimalClicked) == false) {
-        if(currentNumber == 0 ) {
-            currentNumber = "0" + decimalClicked;
+    if(currentNumber.includes(".") == false) {
+        if(currentNumber == "" ) {
+            currentNumber = "0" + ".";
+        } else {
+            currentNumber += ".";
         }
-        currentNumber += decimalClicked;
-        bottomDisplay.textContent = currentNumber;
     }
+    return bottomDisplay.textContent = currentNumber;
 }
 
 numberBtn.forEach(number => number.addEventListener("click", pullNumber));
