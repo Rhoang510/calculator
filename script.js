@@ -1,7 +1,7 @@
 let operator = "";
 let storedNumber = [];
 let currentNumber = [];
-let total = 0;
+let total = [];
 const numberBtn = document.querySelectorAll(".numbers");
 const bottomDisplay = document.querySelector(".currentNumber");
 const topDisplay = document.querySelector(".previousNumber");
@@ -17,10 +17,10 @@ function calculate(storedNumber, currentNumber, operator) {
         "+": (a, b) => a + b,
         "-": (a, b) => a - b,
         "x": (a, b) => a * b,
-        "÷": (a, b) => b === 0 ? alert("Error, can't divide by 0") : a / b,
+        "÷": (a, b) => b == "0" ? "Error, can't divide by zero" : a / b,
         "%": (a, b) => a % b
     }
-    return operator in operators ? operators[operator](Number(storedNumber), Number(currentNumber)) : NaN; 
+    return operator in operators ? operators[operator](Number(storedNumber), Number(currentNumber)) : NaN;
 }
 
 function roundTotal(total) {
@@ -28,7 +28,12 @@ function roundTotal(total) {
 }
 
 function inputTotal() {
-    if(!operator == false){
+    if(currentNumber == "") {
+        return
+    } else if(currentNumber === "0" && operator === "÷") {
+        topDisplay.textContent = "Error, can't divide by 0";
+        currentNumber = [];
+    } else if(!operator == false){
         total = roundTotal(calculate(storedNumber, currentNumber, operator));
         bottomDisplay.textContent = total;
         topDisplay.textContent = `${storedNumber} ${operator} ${currentNumber} =`;
@@ -37,52 +42,34 @@ function inputTotal() {
     }
 }
 
-// function removeLeadingZeros(currentNumber) {
-//     let floatNum = parseFloat(currentNumber);
-//     return floatNum % 1 == 0 ? floatNum.toFixed(0) : floatNum.toFixed(1);
-// }
-
-function inputNumbers() {
-    currentNumber += num;
-    topDisplay.textContent = `${storedNumber} ${operator}`;
-    bottomDisplay.textContent = currentNumber;
-}
-
-function inputOperator() {
-    storedNumber = currentNumber;
-    currentNumber = [];
-    bottomDisplay.textContent = "";
-    topDisplay.textContent = `${storedNumber} ${operator}`;
-    total = 0;
-}
-
 function pullNumber() {
-    num = this.textContent;
     if(!total == false) {
         clear();
-        inputNumbers();
     } else if(currentNumber.length >= 17) {
-        topDisplay.textContent = "Too many numbers, please pick an operator!";
-    } else {
-        inputNumbers();
+        return topDisplay.textContent = "Too many numbers, please pick an operator!";
     }
+    let num = this.textContent;
+    currentNumber += num;
+    currentNumber = currentNumber.replace(/^0+/, 0);
+    topDisplay.textContent = `${storedNumber} ${operator}`;
+    bottomDisplay.textContent = currentNumber;
 }
 
 function pickOperator() {
     if(storedNumber != "" && currentNumber == "") {
         operator = this.textContent;
-        topDisplay.textContent = `${storedNumber} ${operator}`;
+        return topDisplay.textContent = `${storedNumber} ${operator}`;
     } else if(!operator == false) {
         inputTotal();
-        operator = this.textContent;
-        inputOperator();
     } else if(!operator == true && currentNumber == "") {
-        topDisplay.textContent = "Please choose a number first";
-    } else {
-        operator = this.textContent;
-        inputOperator();
+        return topDisplay.textContent = "Please choose a number first";
     }
-    console.log(operator);
+    operator = this.textContent;
+    storedNumber = currentNumber;
+    currentNumber = [];
+    bottomDisplay.textContent = "";
+    topDisplay.textContent = `${storedNumber} ${operator}`;
+    total = 0;
 }
 
 function clear() {
