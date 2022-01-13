@@ -11,30 +11,35 @@ const decimalBtn = document.querySelector("#decimal");
 const deleteBtn = document.querySelector("#deleteBtn");
 const remainderBtn = document.querySelector("#remainder");
 const opsBtn = document.querySelectorAll(".ops");
+const allBtn = document.querySelectorAll("button");
 
 function calculate(storedNumber, currentNumber, currentOperator) {
-    let operators = {
+    const operators = {
         "+": (a, b) => a + b,
         "-": (a, b) => a - b,
         "x": (a, b) => a * b,
-        "÷": (a, b) => b == "0" ? "Error, can't divide by zero" : a / b,
+        "÷": (a, b) => a / b,
         "%": (a, b) => a % b
     }
     return currentOperator in operators ? operators[currentOperator](Number(storedNumber), Number(currentNumber)) : NaN;
 }
 
 function roundTotal(total) {
-    return Math.round(total * 10000) / 10000;
+    return Math.round(total * 1000000) / 1000000;
 }
 
 function inputTotal() {
     if(currentNumber == "") {
         return
     } else if(currentNumber === "0" && currentOperator === "÷") {
-        topDisplay.textContent = "Error, can't divide by 0";
-        currentNumber = [];
+        return topDisplay.textContent = "Error, can't divide by 0";
     } else if(!currentOperator == false){
         total = roundTotal(calculate(storedNumber, currentNumber, currentOperator));
+        total = total.toString();
+        if(total.length >= 17) {
+            total = +total;
+            total = total.toExponential(12);
+        }
         bottomDisplay.textContent = total;
         topDisplay.textContent = `${storedNumber} ${currentOperator} ${currentNumber} =`;
         currentNumber = total;
@@ -47,9 +52,9 @@ function pullNumber(number) {
         clear();
     } else if(currentNumber.length >= 17) {
         return topDisplay.textContent = "Too many numbers, please pick an operator!";
-    } else if(currentNumber === "0") {
+    } else if(currentNumber == "0") {
         currentNumber = [];
-    }
+    } 
     currentNumber += number;
     currentNumber = currentNumber.replace(/^0+/, "0");
     topDisplay.textContent = `${storedNumber} ${currentOperator}`;
@@ -73,7 +78,6 @@ function pickOperator(operator) {
     bottomDisplay.textContent = "";
     topDisplay.textContent = `${storedNumber} ${currentOperator}`;
     total = 0;
-    console.log(operator);
 }
 
 function clear() {
@@ -107,7 +111,7 @@ function keyboardInput(e) {
         pullNumber(key);
     } else if(key === ".") {
         decimal();
-    } else if(["=", "Enter"].includes(key)) {
+    } else if(key === "Enter") {
         inputTotal();
     } else if(key === "Backspace") {
         del();
@@ -116,6 +120,8 @@ function keyboardInput(e) {
     } else if(["+", "-", "*", "/", "%"].includes(key)) {
         pickOperator(convertOperator(key));
     }
+    e.target.blur();
+    // allBtn.classList.add("active");
 }
 
 function convertOperator(keyOp) {

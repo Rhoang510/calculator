@@ -20,8 +20,7 @@ body {
     flex-direction: column;
     justify-content:space-around;
     align-items: center;
-    height: 550px;
-    width: 400px;
+    width: 410px;
     background-color: rgb(2 2 2);
 }
 
@@ -32,7 +31,7 @@ body {
     align-items: flex-end;
     background-color: rgb(0 0 0);
     color: white;
-    width: 390px;
+    width: 400px;
     height: 150px;
     padding-bottom: 10px;
     padding-right: 10px;
@@ -52,7 +51,7 @@ body {
 button {
     background-color: #242222;
     height: 80px;
-    width: 100px;
+    width: 102px;
     font-size: 24px;
     font-weight: 500;
     color: white;
@@ -63,7 +62,8 @@ button:hover {
     background-color: rgb(75, 76, 77);
 }
 
-button:active {
+button:active,
+.active {
     background-color: rgb(191, 207, 216);
     transform: translate(2px, 2px);
     transition: all 0.1s ease-in-out;
@@ -99,7 +99,7 @@ button:active {
 }
 
 #equalBtn {
-    width: 200px;
+    width: 204px;
     background-color: rgb(8, 211, 8)
 }
 
