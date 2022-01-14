@@ -11,7 +11,7 @@ const decimalBtn = document.querySelector("#decimal");
 const deleteBtn = document.querySelector("#deleteBtn");
 const remainderBtn = document.querySelector("#remainder");
 const opsBtn = document.querySelectorAll(".ops");
-const allBtn = document.querySelectorAll("button");
+const allBtn = document.querySelector(".allBtn");
 
 function calculate(storedNumber, currentNumber, currentOperator) {
     const operators = {
@@ -35,13 +35,13 @@ function inputTotal() {
         return topDisplay.textContent = "Error, can't divide by 0";
     } else if(!currentOperator == false){
         total = roundTotal(calculate(storedNumber, currentNumber, currentOperator));
-        total = total.toString();
-        if(total.length >= 17) {
-            total = +total;
+        if(total.toString().length >= 17) {
             total = total.toExponential(12);
+            total = +total;
         }
         bottomDisplay.textContent = total;
         topDisplay.textContent = `${storedNumber} ${currentOperator} ${currentNumber} =`;
+        storedNumber = [];
         currentNumber = total;
         currentOperator = "";
     }
@@ -52,7 +52,7 @@ function pullNumber(number) {
         clear();
     } else if(currentNumber.length >= 17) {
         return topDisplay.textContent = "Too many numbers, please pick an operator!";
-    } else if(currentNumber == "0") {
+    } else if(currentNumber === "0") {
         currentNumber = [];
     } 
     currentNumber += number;
@@ -69,15 +69,15 @@ function pickOperator(operator) {
         return topDisplay.textContent = `${storedNumber} ${currentOperator}`;
     } else if(currentNumber === "0" && currentOperator === "÷") {
         return inputTotal();
-    } else if(!operator == false) {
+    } else if(!currentOperator == false) {
         inputTotal();
     }
     currentOperator = operator;
     storedNumber = currentNumber;
     currentNumber = [];
+    total = 0;
     bottomDisplay.textContent = "";
     topDisplay.textContent = `${storedNumber} ${currentOperator}`;
-    total = 0;
 }
 
 function clear() {
@@ -121,7 +121,6 @@ function keyboardInput(e) {
         pickOperator(convertOperator(key));
     }
     e.target.blur();
-    // allBtn.classList.add("active");
 }
 
 function convertOperator(keyOp) {
