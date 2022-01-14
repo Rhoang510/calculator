@@ -5,7 +5,9 @@ I had a lot of fun doing this project. Did a whole bunch of refactoring when inp
 This calculator has keyboard support, and just about everything is bug free from my extensive testing and rewriting my code. If there are any bugs at all, feel free to message me and I'll gladly be up to the challenge to fix them.
 
 Esc = clear button
+
 Backspace = delete button
+
 Enter = equal button
 
 The rest of the buttons should be straight forward.
