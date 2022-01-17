@@ -21,7 +21,9 @@ body {
     justify-content:space-around;
     align-items: center;
     width: 410px;
-    background-color: rgb(2 2 2);
+    height: auto;
+    background-color: black;
+    border-radius: 10px;
 }
 
 .display {
@@ -35,6 +37,7 @@ body {
     height: 150px;
     padding-bottom: 10px;
     padding-right: 10px;
+    border-radius: 10px 10px 0 0;
 }
 
 .currentNumber {
@@ -66,7 +69,7 @@ button:active,
 .allBtn.active {
     background-color: rgb(191, 207, 216);
     transform: translate(2px, 2px);
-    transition: all 0.2s ease-in-out;
+    transition: all 0.1s ease-in-out;
 }
 
 .allButtons {
@@ -100,11 +103,16 @@ button:active,
 
 #equalBtn {
     width: 204px;
-    background-color: rgb(8, 211, 8)
+    background-color: rgb(8, 211, 8);
+    border-radius: 0 0 10px 0;
 }
 
 #equalBtn:hover {
     background-color: rgb(1, 241, 1);
+}
+
+#decimal {
+    border-radius: 0 0 0 10px;
 }
 
 #icon {
