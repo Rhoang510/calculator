@@ -25,19 +25,21 @@ function calculate(storedNumber, currentNumber, currentOperator) {
 }
 
 function roundTotal(total) {
-    return Math.round(total * 10000) / 10000;
+    return Math.round(total * 1000000) / 1000000;
 }
 
 function inputTotal() {
     if(currentNumber == "") {
         return
-    } else if(currentNumber === "0" && currentOperator === "÷") {
+    } else if(currentNumber == 0 && currentOperator === "÷") {
         return topDisplay.textContent = "Error, can't divide by 0";
     } else if(!currentOperator == false){
         total = roundTotal(calculate(storedNumber, currentNumber, currentOperator));
         if(total.toString().length >= 17) {
             total = +total;
             total = total.toExponential(12);
+        } else if (total == Infinity) {
+            total = 0;
         }
         bottomDisplay.textContent = total;
         topDisplay.textContent = `${storedNumber} ${currentOperator} ${currentNumber} =`;
@@ -48,11 +50,11 @@ function inputTotal() {
 }
 
 function pullNumber(number) {
-    if(!total == false) {
+    if(!total == false || isNaN(total) === true) {
         clear();
     } else if(currentNumber.length >= 17) {
         return topDisplay.textContent = "Too many numbers, please pick an operator!";
-    } else if(currentNumber === "0") {
+    } else if(currentNumber == "0") {
         currentNumber = [];
     } 
     currentNumber += number;
@@ -71,6 +73,9 @@ function pickOperator(operator) {
         return inputTotal();
     } else if(!currentOperator == false) {
         inputTotal();
+    } else if (isNaN(total) === true) {
+        clear();
+        return topDisplay.textContent = "Please choose a number first";
     }
     currentOperator = operator;
     storedNumber = currentNumber;
