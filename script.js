@@ -25,7 +25,7 @@ function calculate(storedNumber, currentNumber, currentOperator) {
 }
 
 function roundTotal(total) {
-    return Math.round(total * 1000000) / 1000000;
+    return Math.round(total * 10000) / 10000;
 }
 
 function inputTotal() {
@@ -36,8 +36,8 @@ function inputTotal() {
     } else if(!currentOperator == false){
         total = roundTotal(calculate(storedNumber, currentNumber, currentOperator));
         if(total.toString().length >= 17) {
-            total = total.toExponential(12);
             total = +total;
+            total = total.toExponential(12);
         }
         bottomDisplay.textContent = total;
         topDisplay.textContent = `${storedNumber} ${currentOperator} ${currentNumber} =`;
